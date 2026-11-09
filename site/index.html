@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<title>Awesome UMI: every UMI device in one place</title>
+<meta name="description" content="A free, open collection of every UMI device (Universal Manipulation Interface), plus the public datasets and code that go with them.">
+<style>
+:root{--bg:#07080f;--bg2:#0d101c;--card:#0f1322;--line:#1f2640;--txt:#eef1ff;--mut:#8a94b8;--a:#8b5cf6;--b:#22d3ee;--c:#b6b6b6;--ok:#34d399;--r:20px}
+:root[data-theme=light]{--bg:#f5f6fb;--bg2:#eceef7;--card:#fff;--line:#e0e4f1;--txt:#12172b;--mut:#5a6586}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f5f6fb;--bg2:#eceef7;--card:#fff;--line:#e0e4f1;--txt:#12172b;--mut:#5a6586}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.55 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 22px;position:relative}
+
+/* animated backdrop */
+.mesh{position:absolute;inset:0 0 auto 0;height:760px;overflow:hidden;pointer-events:none;z-index:0;mask-image:linear-gradient(#000 60%,transparent)}
+.mesh i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:fl 18s ease-in-out infinite alternate}
+.mesh i:nth-child(1){width:520px;height:520px;background:var(--a);left:-8%;top:-12%}
+.mesh i:nth-child(2){width:460px;height:460px;background:var(--b);right:-6%;top:-6%;animation-delay:-6s}
+.mesh i:nth-child(3){width:380px;height:380px;background:var(--c);left:42%;top:30%;opacity:.28;animation-delay:-11s}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.35;mask-image:radial-gradient(ellipse at 50% 0,#000 20%,transparent 70%)}
+@keyframes fl{to{transform:translate(60px,40px) scale(1.15)}}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px) saturate(1.4);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+nav .wrap{display:flex;align-items:center;gap:22px;height:62px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em;font-size:18px}
+.logo s{width:28px;height:28px;border-radius:9px;background:conic-gradient(from 200deg,var(--a),var(--b),var(--c),var(--a));display:grid;place-items:center;text-decoration:none;color:#fff;font-size:13px;box-shadow:0 0 24px -4px var(--a)}
+nav .links{display:flex;gap:4px;margin-left:12px}
+nav .links a{padding:7px 13px;border-radius:999px;color:var(--mut);font-size:14px;font-weight:500}
+nav .links a:hover{color:var(--txt);background:color-mix(in srgb,var(--line) 60%,transparent)}
+nav .sp{flex:1}
+.ibtn{border:1px solid var(--line);background:var(--card);color:var(--txt);height:36px;padding:0 14px;border-radius:999px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:7px}
+.ibtn:hover{border-color:var(--a)}
+
+/* hero */
+.hero{position:relative;text-align:center;padding:84px 0 38px;z-index:1}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 70%,transparent);backdrop-filter:blur(8px);border-radius:999px;padding:6px 14px 6px 8px;font-size:13px;color:var(--mut)}
+.eyebrow b{background:linear-gradient(90deg,var(--a),var(--b));color:#fff;border-radius:999px;padding:2px 9px;font-size:11px;letter-spacing:.05em}
+h1{font-size:clamp(42px,7.6vw,92px);line-height:.98;letter-spacing:-.045em;margin:22px 0 20px;font-weight:800}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--a),var(--b) 50%,var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes sh{to{background-position:-200% 0}}
+.hero p.lead{max-width:660px;margin:0 auto 30px;color:var(--mut);font-size:18px}
+.sbox{max-width:640px;margin:0 auto;position:relative}
+.sbox input{width:100%;height:58px;border-radius:18px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 85%,transparent);backdrop-filter:blur(10px);color:var(--txt);font-size:17px;padding:0 90px 0 52px;outline:none;box-shadow:0 20px 60px -30px #000}
+.sbox input:focus{border-color:var(--a);box-shadow:0 0 0 4px color-mix(in srgb,var(--a) 22%,transparent)}
+.sbox svg{position:absolute;left:18px;top:19px}
+.sbox kbd{position:absolute;right:16px;top:17px;border:1px solid var(--line);border-radius:8px;padding:3px 9px;font-size:12px;color:var(--mut);background:var(--bg2)}
+.stats{display:flex;justify-content:center;gap:clamp(22px,5vw,64px);margin:46px 0 6px;flex-wrap:wrap}
+.stat b{display:block;font-size:clamp(30px,4vw,44px);letter-spacing:-.03em;font-weight:800}
+.stat span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+
+/* marquee */
+.marq{margin:40px 0 10px;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);position:relative;z-index:1}
+.marq div{display:flex;gap:12px;width:max-content;animation:mq 60s linear infinite}
+.marq:hover div{animation-play-state:paused}
+.marq a{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;white-space:nowrap;font-size:14px;color:var(--mut);transition:.2s}
+.marq a:hover{color:var(--txt);border-color:var(--a)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* featured bento */
+h2.t{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.03em;margin:70px 0 6px}
+p.sub{color:var(--mut);margin:0 0 26px}
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(200px,auto);gap:16px}
+.bt{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;justify-content:flex-end;min-height:230px;isolation:isolate;transition:transform .25s,border-color .25s}
+.bt:hover{transform:translateY(-4px);border-color:var(--a)}
+.bt .bg{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;transition:transform .6s}
+.bt:hover .bg{transform:scale(1.06)}
+.bt:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 15%,#05060cf0 92%)}
+.ghost{position:absolute;right:18px;top:6px;font-size:clamp(64px,9vw,120px);font-weight:900;letter-spacing:-.06em;color:#fff2;z-index:-1;line-height:1;pointer-events:none}
+.bt .in{padding:22px}.bt h3{margin:8px 0 6px;font-size:22px;letter-spacing:-.02em;color:#fff}.bt p{margin:0;color:#c7cde6;font-size:14px;max-width:46ch}
+.bt .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#ffffff26;backdrop-filter:blur(8px);color:#fff;border-radius:999px;padding:3px 11px}
+.s6{grid-column:span 6}.s4{grid-column:span 4}.s3{grid-column:span 3}.s2{grid-column:span 2}
+.bt.big{min-height:360px}.bt.big h3{font-size:32px}
+.bt.jp .tag{background:#737373}
+
+/* controls */
+.ctrl{position:sticky;top:62px;z-index:10;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);padding:14px 0 10px;margin-top:20px;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
+.tabs{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tab{padding:8px 20px;border-radius:999px;border:0;background:transparent;color:var(--mut);font-weight:600;font-size:14px;cursor:pointer}
+.tab small{opacity:.7;margin-left:6px;font-weight:500}
+.tab.on{background:linear-gradient(90deg,var(--a),#6d5cf6 60%,var(--b));color:#fff;box-shadow:0 6px 20px -8px var(--a)}
+
+.rc{color:var(--mut);font-size:13px;margin:16px 0 0}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:18px;margin:18px 0 70px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:transform .22s,border-color .22s,box-shadow .22s;opacity:0;transform:translateY(14px)}
+.card.in{opacity:1;transform:none}
+.card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--a) 70%,var(--line));box-shadow:0 24px 50px -26px var(--a)}
+.thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--bg2)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.card:hover .thumb img{transform:scale(1.05)}
+.art{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}
+.art:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 25% 20%,#fff3,transparent 45%),radial-gradient(circle at 85% 90%,#0006,transparent 55%)}
+.art:after{content:"";position:absolute;inset:0;background-image:radial-gradient(#fff3 1px,transparent 1.4px);background-size:18px 18px;opacity:.5}
+.art b{position:relative;z-index:1;font-size:46px;letter-spacing:-.04em;color:#fff;text-shadow:0 6px 30px #0006;font-weight:800;max-width:90%;text-align:center;line-height:1}
+.badge{position:absolute;left:12px;top:12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:#0009;color:#fff;backdrop-filter:blur(8px);z-index:2}
+.badge.r{left:auto;right:12px}
+.badge.open{background:#059669cc}.badge.prop{background:#6a6a6acc}
+.body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:9px;flex:1}
+.body h3{margin:0;font-size:17px;letter-spacing:-.015em;word-break:break-word}
+.body p{margin:0;color:var(--mut);font-size:13.5px;flex:1;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.org{font-size:12.5px;color:var(--mut)}.org b{color:var(--txt);font-weight:600}
+.bar{height:4px;border-radius:4px;background:var(--bg2);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b));border-radius:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.lk{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--txt);transition:.15s}
+.lk:hover{background:var(--txt);color:var(--bg);border-color:var(--txt)}
+.lk.p{background:linear-gradient(90deg,var(--a),var(--b));border:0;color:#fff}
+.lk.p:hover{filter:brightness(1.12);color:#fff}
+.mt{display:flex;gap:12px;font-size:12.5px;color:var(--mut)}.mt b{color:var(--txt)}
+.more{display:block;margin:-30px auto 70px;padding:12px 26px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--txt);cursor:pointer;font-weight:600}
+.more:hover{border-color:var(--a)}
+.empty{text-align:center;color:var(--mut);padding:90px 0;font-size:18px}
+footer{border-top:1px solid var(--line);padding:34px 0 60px;color:var(--mut);font-size:13px;text-align:center}
+footer a{color:var(--b)}
+@media(max-width:860px){nav .links{display:none}.s4,.s3,.s2{grid-column:span 6}.hero{padding-top:56px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+</style>
+<style>
+/* clean override: neutral palette, single accent */
+:root{--bg:#0b0c10;--bg2:#13151b;--card:#101217;--line:#1e2128;--txt:#ecedf1;--mut:#8b909c;--a:#6366f1;--b:#6366f1;--c:#6366f1;--r:14px}
+:root[data-theme=light]{--bg:#fafafa;--bg2:#f1f2f4;--card:#fff;--line:#e5e7eb;--txt:#111318;--mut:#626875}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#fafafa;--bg2:#f1f2f4;--card:#fff;--line:#e5e7eb;--txt:#111318;--mut:#626875}}
+.mesh,.marq{display:none}
+.logo s{background:var(--a);box-shadow:none}
+.hero{padding:76px 0 24px}
+h1{font-weight:700;letter-spacing:-.04em}
+h1 em{background:none;-webkit-background-clip:initial;background-clip:initial;color:var(--mut)}
+.eyebrow{background:transparent;backdrop-filter:none}
+.eyebrow b{background:var(--a)}
+.sbox input{background:var(--card);backdrop-filter:none;box-shadow:none;height:54px;border-radius:12px}
+.sbox input:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--a) 25%,transparent)}
+.stat b{font-weight:700}
+nav{background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.tab.on{background:var(--txt);color:var(--bg);box-shadow:none}
+.bt{min-height:200px}.bt.big{min-height:300px}
+.bt:after{background:linear-gradient(180deg,transparent 30%,#0b0c10cc)}
+:root[data-theme=light] .bt:after{background:linear-gradient(180deg,transparent 30%,#ffffffd9)}
+.bt .bg{background:var(--bg2)!important}
+.bt h3{color:var(--txt)}.bt p{color:var(--mut)}
+.bt .tag,.bt.jp .tag{background:var(--bg2);color:var(--mut);border:1px solid var(--line);backdrop-filter:none}
+.ghost{color:color-mix(in srgb,var(--txt) 5%,transparent)}
+.card:hover{box-shadow:none;border-color:var(--mut)}
+.art{background:var(--bg2)!important}
+.art:before{background:none}.art:after{opacity:.18}
+.art b{color:color-mix(in srgb,var(--txt) 78%,transparent);text-shadow:none;font-weight:700;font-size:34px}
+.badge{background:var(--bg);color:var(--mut);border:1px solid var(--line);backdrop-filter:none;font-weight:600}
+.badge.open{background:var(--bg);color:#4ade80;border-color:#4ade8040}
+.badge.prop{background:var(--bg);color:var(--mut)}
+.bar i{background:var(--a)}
+.lk.p{background:var(--txt);color:var(--bg)}.lk.p:hover{filter:none;opacity:.85;color:var(--bg)}
+.lk:hover{background:var(--bg2);color:var(--txt);border-color:var(--mut)}
+</style>
+<style>
+.card.ds{cursor:pointer}
+.badge.gate{color:#909090;border-color:#90909047}
+body.lock{overflow:hidden}
+.dr-bg{position:fixed;inset:0;background:#000a;opacity:0;pointer-events:none;transition:opacity .25s;z-index:40}
+.dr-bg.open{opacity:1;pointer-events:auto}
+.dr{position:fixed;top:0;right:0;bottom:0;width:min(540px,100%);background:var(--card);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);z-index:41;display:flex;flex-direction:column}
+.dr.open{transform:none}
+.dr-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line);color:var(--mut);font-size:13px}
+.dr-x{border:1px solid var(--line);background:var(--bg2);color:var(--txt);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px}
+.dr-x:hover{border-color:var(--mut)}
+.dr-in{padding:22px 22px 40px;overflow-y:auto;flex:1}
+.dr-in h2{margin:0 0 4px;font-size:22px;letter-spacing:-.02em;word-break:break-word}
+.dr-in .by{color:var(--mut);font-size:14px;margin-bottom:16px}
+.pl{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 18px}
+.pl span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--mut);background:var(--bg2)}
+.pl span.g{color:#909090;border-color:#90909047}.pl span.f{color:#4ade80;border-color:#4ade8040}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.kv div{border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--bg2)}
+.kv b{display:block;font-size:18px;letter-spacing:-.01em}.kv span{font-size:12px;color:var(--mut)}
+.note{border:1px solid #90909047;background:#90909010;color:var(--txt);border-radius:10px;padding:12px 14px;font-size:13.5px;margin-bottom:18px}
+.dr-in h4{margin:20px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut)}
+.desc{font-size:14px;color:var(--mut);max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--bg2)}
+.desc h5{margin:14px 0 4px;font-size:14px;color:var(--txt)}.desc h5:first-child{margin-top:0}.desc p{margin:0 0 8px}
+.code{position:relative;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--line);border-radius:10px;background:var(--bg2);padding:12px 70px 12px 14px;overflow-x:auto;white-space:pre;color:var(--txt)}
+.code button{position:absolute;right:8px;top:8px;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:7px;padding:3px 9px;font-size:12px;cursor:pointer}
+.dr-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.dr-act a{flex:1;text-align:center;padding:11px 14px;border-radius:10px;font-weight:600;font-size:14px;border:1px solid var(--line)}
+.dr-act a.p{background:var(--txt);color:var(--bg);border-color:var(--txt)}
+</style>
+<style>.lk.buy{background:var(--a);border-color:var(--a);color:#fff}.lk.buy:hover{background:var(--a);color:#fff;opacity:.88;border-color:var(--a)}</style>
+<style>.logo svg{display:block;flex:none}</style>
+<style>
+/* warm palette (white / peach / orange / ember / black) */
+:root{--bg:#0a0a0a;--bg2:#121212;--card:#0e0e0e;--line:#1f1f1f;--txt:#f0f0f0;--mut:#9c9c9c;--a:#888888;--b:#888888;--c:#888888}
+:root[data-theme=light]{--bg:#f5f5f5;--bg2:#e9e9e9;--card:#fcfcfc;--line:#dcdcdc;--txt:#121212;--mut:#6d6d6d}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f5f5f5;--bg2:#e9e9e9;--card:#fcfcfc;--line:#dcdcdc;--txt:#121212;--mut:#6d6d6d}}
+.logo{color:var(--txt)}
+.hero{margin-top:14px;border-radius:30px;overflow:hidden;position:relative;padding:92px 24px 54px;
+ background:
+  radial-gradient(70% 55% at 12% 62%,#808080 0%,transparent 70%),
+  radial-gradient(60% 45% at 92% 30%,#d9d9d9 0%,transparent 70%),
+  linear-gradient(180deg,#ffffff 0%,#f3f3f3 7%,#d2d2d2 17%,#9f9f9f 33%,#808080 47%,#656565 68%,#202020 86%,#0b0605 100%)}
+.hero:after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");mix-blend-mode:overlay;opacity:.55;pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:#424242;border-color:#00000018;background:#ffffffa6}
+.hero .eyebrow b{background:#888888}
+h1{color:#fff;font-weight:800;letter-spacing:-.045em;text-shadow:0 2px 40px #65656555}
+h1 em{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;font-style:normal;letter-spacing:-.02em;color:#fff;font-size:1.12em}
+.hero p.lead{color:#ffffffe6}
+.hero .sbox input{background:#0b060588;border-color:#ffffff30;color:#fff;backdrop-filter:blur(10px)}
+.hero .sbox input::placeholder{color:#ffffffa8}
+.hero .sbox kbd{background:#ffffff1f;border-color:#ffffff30;color:#fff}
+.hero .stat b{color:#fff}.hero .stat span{color:#ffffffb8}
+.tab.on{background:var(--txt);color:var(--bg)}
+.lk.buy,.eyebrow b{background:var(--a)}
+.bar i{background:var(--a)}
+.bt:after{background:linear-gradient(180deg,transparent 30%,#0a0a0ad9)}
+:root[data-theme=light] .bt:after{background:linear-gradient(180deg,transparent 30%,#f5f5f5e6)}
+.ghost{color:color-mix(in srgb,var(--a) 9%,transparent)}
+.card:hover{border-color:var(--a)}
+</style>
+<style>
+/* lighter hero + visible grain */
+.hero{background:radial-gradient(60% 50% at 14% 70%,#a8a8a8 0%,transparent 70%),radial-gradient(55% 45% at 90% 28%,#e3e3e3 0%,transparent 70%),linear-gradient(180deg,#ffffff 0%,#f6f6f6 8%,#dcdcdc 22%,#bebebe 40%,#a8a8a8 58%,#a0a0a0 74%,#8e8e8e 90%,#7c7c7c 100%)}
+.hero:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.6 0 0 0 -1.05'/></filter><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 2.6 0 0 -1.2'/></filter><rect width='100%' height='100%' filter='url(%23d)'/><rect width='100%' height='100%' filter='url(%23l)'/></svg>");mix-blend-mode:normal;opacity:.75}
+.hero .eyebrow{color:#323232;background:#ffffffb0}
+h1{color:#121212;text-shadow:none}
+h1 em{color:#121212}
+.hero p.lead{color:#272727}
+.hero .sbox input{background:#ffffff73;border-color:#ffffff99;color:#121212;backdrop-filter:blur(10px)}
+.hero .sbox input::placeholder{color:#424242}
+.hero .sbox svg{stroke:#424242}
+.hero .sbox kbd{background:#ffffff80;border-color:#ffffffa0;color:#323232}
+.hero .stat b{color:#121212}.hero .stat span{color:#323232}
+/* boot screen */
+#boot{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#000;cursor:pointer;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .6s .25s}
+#boot:after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.6 0 0 0 -1.05'/></filter><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 2.6 0 0 -1.2'/></filter><rect width='100%' height='100%' filter='url(%23d)'/><rect width='100%' height='100%' filter='url(%23l)'/></svg>");opacity:.8;pointer-events:none}
+#boot.out{transform:translateY(-100%);opacity:0}
+#boot .boot-wordmark{position:relative;z-index:1;color:#f5f5f5;font:700 clamp(72px,13vw,132px)/1 "Caveat","Bradley Hand","Segoe Script",cursive;letter-spacing:-.035em;white-space:nowrap;clip-path:inset(0 100% 0 0)}
+#boot.go .boot-wordmark{animation:handwriting 2.1s cubic-bezier(.2,.7,.2,1) .15s forwards}
+@keyframes handwriting{to{clip-path:inset(0)}}
+@media(prefers-reduced-motion:reduce){#boot{display:none}}
+</style>
+<style>
+/* site-wide warm background + grain */
+html{background:var(--bg)}
+body{background:transparent}
+body:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+ background:radial-gradient(60% 45% at 8% 0%,#dcdcdccc,transparent 70%),radial-gradient(55% 45% at 100% 100%,#bcbcbc88,transparent 70%),linear-gradient(180deg,#f2f2f2 0%,#f5f5f5 30%,#f0f0f0 70%,#e8e8e8 100%)}
+body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.2 0 0 0 -.98'/></filter><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 2.2 0 0 -1.12'/></filter><rect width='100%' height='100%' filter='url(%23d)'/><rect width='100%' height='100%' filter='url(%23l)'/></svg>");opacity:.42}
+:root[data-theme=dark] body:before{background:radial-gradient(60% 45% at 8% 0%,#8f8f8f26,transparent 70%),radial-gradient(55% 45% at 100% 100%,#8f8f8f33,transparent 70%),linear-gradient(180deg,#0a0a0a 0%,#0e0e0e 55%,#171717 100%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body:before{background:radial-gradient(60% 45% at 8% 0%,#8f8f8f26,transparent 70%),radial-gradient(55% 45% at 100% 100%,#8f8f8f33,transparent 70%),linear-gradient(180deg,#0a0a0a 0%,#0e0e0e 55%,#171717 100%)}}
+:root[data-theme=dark] body:after{opacity:.5}
+nav{background:color-mix(in srgb,var(--bg) 55%,transparent)}
+.ctrl{background:color-mix(in srgb,var(--bg) 60%,transparent)}
+.hero:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.2 0 0 0 -.98'/></filter><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 2.2 0 0 -1.12'/></filter><rect width='100%' height='100%' filter='url(%23d)'/><rect width='100%' height='100%' filter='url(%23l)'/></svg>");opacity:.5}
+#boot:after{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='d'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.2 0 0 0 -.98'/></filter><filter id='l'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 2.2 0 0 -1.12'/></filter><rect width='100%' height='100%' filter='url(%23d)'/><rect width='100%' height='100%' filter='url(%23l)'/></svg>");opacity:.55}
+/* tags under device name */
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin:-2px 0 2px}
+.tg{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mut);background:var(--bg2)}
+.tg.open{color:#15803d;border-color:#15803d40}
+:root[data-theme=dark] .tg.open{color:#4ade80;border-color:#4ade8040}
+.tg.sale{color:var(--a);border-color:color-mix(in srgb,var(--a) 40%,transparent)}
+</style>
+<style>
+/* black dotted hero + handwriting */
+.hwlogo{font:700 31px/1 "Caveat","Bradley Hand","Segoe Script",cursive;letter-spacing:.01em;color:var(--txt);display:flex;align-items:baseline;gap:5px}
+.hwlogo i{font-style:normal;font-weight:500;font-size:25px;color:var(--mut)}
+.hero{background:radial-gradient(38% 48% at 76% 26%,#8f8f8f40,transparent 72%),#0a0605;color:#ececec;text-align:left;padding:0;border-radius:28px}
+.hero:after{opacity:.38}
+.hg{display:grid;grid-template-columns:1.05fr .95fr;gap:10px;align-items:center;padding:40px 46px 44px}
+.hero h1{color:#f0f0f0;text-align:left;font-size:clamp(40px,5.4vw,74px);margin:20px 0 18px;text-shadow:none}
+.hero h1 em{color:#bcbcbc}
+.hero .eyebrow{color:#c2c2c2;background:#ffffff10;border-color:#ffffff24}
+.hero p.lead{color:#b5b5b5;margin:0 0 26px;max-width:520px;font-size:17px}
+.hero .sbox{margin:0;max-width:520px}
+.hero .sbox input{background:#ffffff0f;border-color:#ffffff2a;color:#f0f0f0;height:52px}
+.hero .sbox input::placeholder{color:#9d9d9d}
+.hero .sbox svg{stroke:#b3b3b3}
+.hero .sbox kbd{background:#ffffff14;border-color:#ffffff2a;color:#cecece}
+.hero .stats{justify-content:flex-start;margin:34px 0 0;gap:clamp(20px,3vw,44px)}
+.hero .stat b{color:#f0f0f0}.hero .stat span{color:#9d9d9d}
+.hv svg{width:100%;height:auto;max-height:600px;display:block;filter:drop-shadow(0 0 16px #97979755)}
+.dl{fill:none;stroke:#e8e8e8;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:0 6.6;animation:march 1.8s linear infinite}
+.dl.hi{stroke:#f4f4f4}
+@keyframes march{to{stroke-dashoffset:-13.2}}
+.rays{animation:flick 2.6s ease-in-out infinite,march 1.8s linear infinite}
+@keyframes flick{50%{opacity:.35}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:br 4s ease-in-out infinite}
+@keyframes br{50%{transform:scale(1.12);opacity:.8}}
+.fl{animation:gl 4.4s ease-in-out infinite}.fr{animation:gr 4.4s ease-in-out infinite}
+@keyframes gl{0%,100%{transform:translateX(-9px)}45%,70%{transform:translateX(3px)}}
+@keyframes gr{0%,100%{transform:translateX(9px)}45%,70%{transform:translateX(-3px)}}
+.tr{animation:march 1.1s linear infinite;stroke:#a8a8a8}
+@media(max-width:900px){.hg{grid-template-columns:1fr;padding:28px 22px 30px}.hv{max-width:360px;margin:0 auto}}
+@media(prefers-reduced-motion:reduce){.fl,.fr,.pulse,.rays{animation:none}.dl{animation:none}}
+/* boot: handwritten wordmark */
+#boot{background:#000!important}
+</style>
+<style>#boot:after{opacity:.28!important}</style>
+<style>
+/* ===== pure black & white ===== */
+:root,:root[data-theme=dark]{--bg:#000;--bg2:#0e0e0e;--card:#070707;--line:#242424;--txt:#f4f4f4;--mut:#8c8c8c;--a:#fff;--b:#fff;--c:#fff}
+:root[data-theme=light]{--bg:#fff;--bg2:#f3f3f3;--card:#fff;--line:#e3e3e3;--txt:#0a0a0a;--mut:#6a6a6a;--a:#0a0a0a;--b:#0a0a0a;--c:#0a0a0a}
+html{background:var(--bg)}
+body:before{background:radial-gradient(60% 40% at 50% 0%,#ffffff12,transparent 70%),linear-gradient(180deg,#000,#050505)!important}
+:root[data-theme=light] body:before{background:linear-gradient(180deg,#fff,#f6f6f6)!important}
+body:after{opacity:.3!important}
+:root[data-theme=light] body:after{opacity:.22!important}
+nav{background:color-mix(in srgb,var(--bg) 70%,transparent)!important}
+.ctrl{background:color-mix(in srgb,var(--bg) 78%,transparent)!important}
+.eyebrow b{background:var(--txt)!important;color:var(--bg)!important}
+.lk.buy{background:var(--txt)!important;color:var(--bg)!important;border-color:var(--txt)!important}
+.lk.buy:hover{opacity:.85}
+.tg.open,.tg.sale{color:var(--txt)!important;border-color:var(--mut)!important}
+.badge.open{color:var(--txt)!important}
+.bar i{background:var(--txt)!important}
+.card:hover{border-color:var(--txt)!important}
+.hero .eyebrow b{background:#fff!important;color:#000!important}
+.hero{background:radial-gradient(40% 50% at 76% 30%,#ffffff14,transparent 72%),#000!important;border:1px solid #1c1c1c}
+.hero h1 em{color:#fff!important}
+.hv svg{filter:drop-shadow(0 0 14px #ffffff40)!important}
+.tr{stroke:#fff!important}
+#boot{background:#000!important}
+.ghost{color:color-mix(in srgb,var(--txt) 6%,transparent)!important}
+.pill.g,.pill.v{color:var(--txt)!important}
+
+/* ===== loading animations ===== */
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.thumb,.sl{background:linear-gradient(90deg,var(--bg2) 25%,color-mix(in srgb,var(--line) 70%,var(--bg2)) 50%,var(--bg2) 75%);background-size:200% 100%;animation:sk 1.5s linear infinite}
+.thumb img{opacity:0;transition:opacity .6s ease}
+.thumb img.ok{opacity:1}
+.card.sk{opacity:1;transform:none;pointer-events:none}
+.card.sk .thumb{animation:sk 1.5s linear infinite}
+.sl{display:block;height:12px;border-radius:6px;margin:3px 0;width:100%}
+.sl.w40{width:40%}.sl.w60{width:60%}.sl.w80{width:80%}
+.sl.t{height:18px;width:55%;margin-bottom:8px}
+.ld{position:absolute;bottom:72px;z-index:1;display:flex;gap:10px}
+.ld i{width:7px;height:7px;border-radius:50%;background:#f4f4f4;opacity:.2;animation:ldp 1.1s ease-in-out infinite}
+.ld i:nth-child(2){animation-delay:.12s}.ld i:nth-child(3){animation-delay:.24s}.ld i:nth-child(4){animation-delay:.36s}.ld i:nth-child(5){animation-delay:.48s}
+@keyframes ldp{0%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1.25)}}
+.dr-ld{padding:2px 0}
+@media(prefers-reduced-motion:reduce){.thumb,.sl,.ld i{animation:none}}
+</style>
+<style>
+/* ===== no texture; dithered black & white aesthetic ===== */
+body:before,body:after,.hero:after,#boot:after{display:none!important}
+html,body{background:var(--bg)!important}
+:root,:root[data-theme=dark]{--line:#2c2c2c;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+:root[data-theme=light]{--line:#cfcfcf}
+nav{background:var(--bg)!important;backdrop-filter:none}
+.ctrl{background:var(--bg)!important;backdrop-filter:none}
+/* dotted borders everywhere */
+.card,.bt,.hero,.tabs,.lk,.tg,.stat,.kv div,.dr,.dr-x,.ibtn,.sbox input,.desc,.code,.eyebrow,.note,.badge{border-style:dotted!important}
+.card,.bt,.hero{border-width:1px;border-color:#3a3a3a!important}
+:root[data-theme=light] .card,:root[data-theme=light] .bt{border-color:#b5b5b5!important}
+.card{border-radius:6px}.bt{border-radius:6px}.hero{border-radius:6px}
+.thumb{border-bottom:1px solid var(--line)}
+/* mono labels */
+.sub,.rc,.org,.tg,.badge,.stat span,.eyebrow,.tab small,.bt .tag,.lk,.by,.kv span,.dr-in h4,h2.t+p{font-family:var(--mono)}
+.lk,.tg{font-size:11.5px;letter-spacing:.02em}
+.sub,h2.t+p{font-size:13px}
+h2.t{letter-spacing:-.04em;text-transform:none}
+/* hero: ticker, text left, dithered artwork right */
+.hero{background:#000!important;border:1px dotted #3a3a3a;overflow:hidden}
+.hg{align-items:stretch;padding:0;gap:0}
+.ht{padding:54px 46px 52px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.hv{position:relative;overflow:hidden;min-height:700px;display:flex;justify-content:center;align-items:flex-start;border-left:1px dotted #2c2c2c}
+.hw{position:relative;height:1000px;aspect-ratio:735/1446;margin-top:-6px}
+.hw img{width:100%;height:100%;display:block}
+.hero h1{font-size:clamp(40px,5vw,70px)}
+.hero h1 em{font-family:"Cormorant Garamond",Georgia,serif}
+@media(max-width:900px){.hv{min-height:560px;border-left:0;border-top:1px dotted #2c2c2c}.hw{height:760px}.ht{padding:32px 22px}}
+/* Keep browse thumbnails in their original colors without a texture overlay. */
+.thumb img{filter:none}
+.thumb:after{content:none}
+.art:after{content:none}
+.art{background:#0b0b0b!important}.art:after{opacity:.35!important}.art b{color:#e8e8e8!important}
+.thumb{background-color:var(--bg2)}
+.bt .bg{background:var(--bg2)!important}
+</style>
+<style>.stat{border:0!important;padding:0!important}.hero .sbox{width:100%;max-width:520px}.hero .sbox input{width:100%}.hv{min-height:760px}.hw{height:960px;margin-top:0}</style>
+<style>.card{opacity:1!important;transform:none!important;animation:cin .55s cubic-bezier(.2,.8,.2,1) both}.card.sk{animation:none}@keyframes cin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.card{animation:none}}</style>
+<style>
+.hw{width:504px;max-width:100%}
+.hw{position:relative}
+.hw .hw-fallback,.hw .hw-art{position:absolute;inset:0;width:100%;height:100%}
+.hw .hw-fallback{z-index:0}
+.hw .hw-fallback[hidden]{display:none}
+.hw .hw-art{z-index:1}
+.hv{min-height:min(86vh,720px);align-items:center}
+.hw{height:min(86vh,680px);width:auto;aspect-ratio:245/482;margin:0 auto}
+</style>
+<style>
+</style>
+<style>.hw .gl{display:none!important}</style>
+<style>.thumb img{filter:none!important}.thumb:after{display:none!important;content:none!important}</style>
+<style>
+.hw-label{position:absolute;left:66%;top:24.2%;z-index:3;display:flex;align-items:center;gap:8px;font:11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#d9d9d9}
+.hw-label:before{content:"";width:34px;border-top:1px dotted #bdbdbd}
+.nav-logo{height:26px;width:auto;fill:currentColor;flex:none;margin-right:4px}
+.hwlogo{align-items:center}
+.boot-lock{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(14px,3vw,26px)}
+.boot-logo{height:clamp(64px,13vw,120px);width:auto;fill:#f5f5f5;opacity:0;transform:scale(.86)}
+#boot.go .boot-logo{animation:logoin .7s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes logoin{to{opacity:1;transform:none}}
+#boot.go .boot-wordmark{animation-delay:.6s}
+</style>
+<style>.hv{align-items:flex-start!important;justify-content:center!important;overflow:hidden}.hw{width:100%!important;max-width:none!important;height:auto!important;aspect-ratio:735/1446;margin:0!important}</style>
+<style>@media(max-width:900px){.hv{width:100%!important;max-width:560px!important;min-height:0!important;height:min(118vw,640px);margin:0 auto!important;border-top:1px dotted #2c2c2c}}</style>
+<style>.bt .bg.im{background-image:var(--img)!important;background-size:cover!important;background-repeat:no-repeat!important;background-position:var(--pos,50% 50%)!important;background-color:var(--bg2)!important}.bt:after{background:linear-gradient(180deg,transparent 32%,#000000d9 88%)!important}.bt .in{z-index:1}</style>
+<style>.bt .bg.im{filter:brightness(.72) saturate(.95)}.bt:after{background:linear-gradient(180deg,#00000026 0%,#0000008c 42%,#000000eb 100%)!important}</style>
+</head>
+<body>
+<div id="boot" aria-hidden="true">
+  <div class="boot-lock"><svg class="boot-logo" viewBox="0 0 98.9 100" aria-hidden="true"><path d="M81.61 0.02 L81.10 0.05 L80.59 0.11 L80.09 0.19 L79.59 0.27 L79.08 0.36 L78.58 0.46 L78.09 0.59 L77.60 0.73 L77.12 0.90 L76.64 1.07 L76.17 1.26 L75.70 1.46 L75.24 1.67 L74.79 1.91 L74.34 2.16 L73.90 2.42 L73.47 2.69 L73.05 2.97 L72.63 3.26 L72.23 3.57 L71.84 3.90 L71.45 4.24 L71.08 4.58 L70.72 4.94 L70.37 5.31 L70.03 5.69 L69.70 6.08 L69.38 6.47 L69.07 6.88 L68.78 7.30 L68.50 7.73 L68.24 8.16 L67.99 8.61 L67.75 9.06 L67.53 9.52 L67.33 9.98 L67.14 10.46 L66.96 10.93 L66.79 11.41 L66.64 11.90 L66.51 12.39 L66.38 12.89 L66.28 13.39 L66.20 13.89 L66.13 14.39 L66.08 14.90 L66.04 15.41 L66.02 15.92 L66.02 16.43 L66.02 16.93 L66.02 17.44 L66.02 17.95 L66.02 18.46 L66.02 18.97 L66.02 19.48 L66.02 19.99 L66.02 20.50 L66.02 21.01 L66.02 21.52 L66.02 22.03 L66.02 22.54 L66.02 23.05 L66.02 23.56 L66.02 24.07 L66.02 24.58 L66.02 25.09 L66.02 25.59 L66.02 26.10 L66.02 26.61 L66.02 27.12 L66.02 27.63 L66.02 28.14 L66.02 28.65 L66.02 29.16 L66.02 29.67 L66.02 30.18 L66.02 30.69 L66.02 31.20 L66.02 31.71 L66.02 32.22 L66.02 32.73 L66.02 33.24 L66.02 33.75 L66.02 34.25 L66.02 34.76 L66.02 35.27 L66.02 35.78 L66.02 36.29 L66.02 36.80 L66.02 37.31 L66.02 37.82 L66.02 38.33 L66.02 38.84 L66.02 39.35 L66.02 39.86 L66.02 40.37 L66.02 40.88 L66.02 41.39 L66.02 41.90 L66.02 42.41 L66.02 42.91 L66.02 43.42 L66.02 43.93 L66.02 44.44 L66.02 44.95 L66.02 45.46 L66.01 45.97 L65.99 46.48 L65.95 46.99 L65.92 47.50 L65.88 48.00 L65.83 48.51 L65.76 49.01 L65.66 49.51 L65.54 50.01 L65.41 50.50 L65.27 50.99 L65.11 51.48 L64.94 51.96 L64.75 52.43 L64.55 52.90 L64.33 53.36 L64.09 53.81 L63.84 54.25 L63.58 54.69 L63.30 55.11 L63.00 55.53 L62.69 55.93 L62.37 56.33 L62.04 56.71 L61.70 57.09 L61.34 57.46 L60.98 57.81 L60.60 58.15 L60.21 58.48 L59.81 58.80 L59.41 59.11 L58.99 59.40 L58.56 59.68 L58.13 59.94 L57.68 60.19 L57.23 60.42 L56.77 60.64 L56.30 60.85 L55.83 61.03 L55.34 61.19 L54.86 61.34 L54.37 61.48 L53.87 61.61 L53.38 61.72 L52.88 61.81 L52.37 61.88 L51.86 61.93 L51.36 61.97 L50.85 61.99 L50.34 61.99 L49.83 61.99 L49.32 61.97 L48.81 61.94 L48.30 61.89 L47.80 61.82 L47.30 61.72 L46.80 61.61 L46.31 61.49 L45.82 61.35 L45.34 61.19 L44.86 61.01 L44.39 60.82 L43.92 60.60 L43.47 60.37 L43.02 60.13 L42.58 59.88 L42.14 59.62 L41.71 59.35 L41.29 59.06 L40.87 58.77 L40.47 58.45 L40.08 58.13 L39.71 57.78 L39.34 57.43 L38.99 57.06 L38.65 56.68 L38.32 56.29 L38.00 55.90 L37.69 55.49 L37.40 55.07 L37.12 54.65 L36.86 54.21 L36.60 53.77 L36.37 53.32 L36.14 52.86 L35.94 52.39 L35.75 51.92 L35.58 51.44 L35.43 50.95 L35.29 50.46 L35.16 49.97 L35.05 49.47 L34.95 48.97 L34.86 48.47 L34.79 47.97 L34.76 47.46 L34.74 46.95 L34.74 46.44 L34.74 45.93 L34.74 45.42 L34.74 44.91 L34.74 44.40 L34.74 43.89 L34.74 43.38 L34.74 42.87 L34.74 42.37 L34.74 41.86 L34.74 41.35 L34.74 40.84 L34.74 40.33 L34.74 39.82 L34.74 39.31 L34.74 38.80 L34.74 38.29 L34.74 37.78 L34.74 37.27 L34.74 36.76 L34.74 36.25 L34.74 35.74 L34.74 35.23 L34.74 34.72 L34.74 34.21 L34.74 33.71 L34.74 33.20 L34.74 32.69 L34.74 32.18 L34.74 31.67 L34.74 31.16 L34.74 30.65 L34.74 30.14 L34.74 29.63 L34.74 29.12 L34.74 28.61 L34.74 28.10 L34.74 27.59 L34.74 27.08 L34.74 26.57 L34.74 26.06 L34.74 25.56 L34.74 25.05 L34.74 24.54 L34.74 24.03 L34.74 23.52 L34.74 23.01 L34.74 22.50 L34.74 21.99 L34.74 21.48 L34.74 20.97 L34.74 20.46 L34.74 19.95 L34.74 19.44 L34.74 18.93 L34.74 18.42 L34.74 17.91 L34.74 17.40 L34.73 16.90 L34.71 16.39 L34.66 15.88 L34.59 15.38 L34.51 14.87 L34.42 14.37 L34.32 13.87 L34.21 13.37 L34.08 12.88 L33.93 12.39 L33.77 11.91 L33.59 11.43 L33.41 10.96 L33.21 10.49 L33.00 10.03 L32.77 9.57 L32.53 9.12 L32.28 8.68 L32.00 8.25 L31.72 7.83 L31.42 7.41 L31.12 7.01 L30.80 6.61 L30.48 6.21 L30.14 5.83 L29.79 5.46 L29.43 5.10 L29.05 4.76 L28.67 4.43 L28.27 4.10 L27.87 3.79 L27.46 3.48 L27.05 3.19 L26.62 2.91 L26.18 2.65 L25.74 2.40 L25.29 2.16 L24.84 1.93 L24.38 1.71 L23.91 1.51 L23.43 1.32 L22.95 1.16 L22.47 1.00 L21.98 0.86 L21.48 0.74 L20.99 0.63 L20.49 0.53 L19.99 0.44 L19.48 0.37 L18.97 0.32 L18.47 0.28 L17.96 0.26 L17.45 0.26 L16.94 0.26 L16.43 0.28 L15.92 0.31 L15.41 0.36 L14.91 0.42 L14.40 0.49 L13.90 0.59 L13.41 0.70 L12.91 0.81 L12.42 0.95 L11.93 1.10 L11.45 1.27 L10.98 1.45 L10.51 1.65 L10.04 1.86 L9.58 2.08 L9.13 2.31 L8.68 2.55 L8.24 2.81 L7.81 3.09 L7.40 3.38 L6.98 3.68 L6.58 3.99 L6.18 4.31 L5.80 4.64 L5.42 4.98 L5.05 5.33 L4.69 5.69 L4.35 6.07 L4.02 6.45 L3.70 6.85 L3.39 7.26 L3.09 7.67 L2.81 8.09 L2.53 8.52 L2.27 8.96 L2.02 9.40 L1.79 9.86 L1.57 10.32 L1.37 10.78 L1.18 11.26 L1.00 11.73 L0.83 12.21 L0.68 12.70 L0.54 13.19 L0.42 13.69 L0.31 14.18 L0.22 14.68 L0.14 15.19 L0.08 15.69 L0.03 16.20 L0.01 16.71 L0.00 17.22 L0.00 17.73 L0.00 18.24 L0.00 18.75 L0.00 19.26 L0.00 19.77 L0.00 20.28 L0.00 20.79 L0.00 21.29 L0.00 21.80 L0.00 22.31 L0.00 22.82 L0.00 23.33 L0.00 23.84 L0.00 24.35 L0.00 24.86 L0.00 25.37 L0.01 25.88 L0.02 26.39 L0.06 26.90 L0.12 27.40 L0.18 27.91 L0.26 28.41 L0.36 28.91 L0.48 29.41 L0.61 29.90 L0.76 30.38 L0.92 30.87 L1.09 31.35 L1.27 31.82 L1.47 32.29 L1.68 32.76 L1.91 33.21 L2.15 33.66 L2.41 34.10 L2.67 34.54 L2.95 34.96 L3.24 35.38 L3.54 35.79 L3.86 36.19 L4.18 36.58 L4.52 36.97 L4.87 37.34 L5.23 37.70 L5.60 38.04 L5.98 38.38 L6.37 38.71 L6.77 39.03 L7.18 39.33 L7.60 39.62 L8.03 39.90 L8.46 40.16 L8.90 40.42 L9.34 40.67 L9.79 40.93 L10.23 41.18 L10.67 41.43 L11.11 41.68 L11.55 41.94 L11.99 42.20 L12.43 42.46 L12.87 42.72 L13.30 42.98 L13.74 43.24 L14.19 43.49 L14.63 43.75 L15.07 44.00 L15.51 44.25 L15.95 44.50 L16.40 44.76 L16.84 45.01 L17.28 45.26 L17.72 45.51 L18.17 45.77 L18.61 46.02 L19.05 46.28 L19.49 46.54 L19.93 46.79 L20.37 47.05 L20.81 47.31 L21.25 47.56 L21.69 47.82 L22.13 48.07 L22.57 48.33 L23.01 48.58 L23.45 48.84 L23.89 49.09 L24.33 49.35 L24.77 49.60 L25.22 49.86 L25.66 50.11 L26.10 50.36 L26.54 50.62 L26.98 50.88 L27.40 51.16 L27.82 51.45 L28.23 51.76 L28.63 52.07 L29.02 52.40 L29.40 52.74 L29.77 53.09 L30.13 53.44 L30.48 53.82 L30.82 54.20 L31.14 54.59 L31.45 55.00 L31.75 55.41 L32.04 55.83 L32.31 56.26 L32.58 56.70 L32.82 57.14 L33.06 57.59 L33.27 58.05 L33.47 58.52 L33.66 59.00 L33.84 59.47 L34.00 59.96 L34.15 60.44 L34.28 60.94 L34.39 61.43 L34.49 61.93 L34.57 62.44 L34.65 62.94 L34.71 63.44 L34.73 63.95 L34.74 64.46 L34.74 64.97 L34.74 65.48 L34.74 65.99 L34.74 66.50 L34.74 67.01 L34.74 67.52 L34.74 68.03 L34.74 68.54 L34.74 69.05 L34.74 69.56 L34.74 70.07 L34.74 70.58 L34.74 71.09 L34.74 71.59 L34.74 72.10 L34.74 72.61 L34.74 73.12 L34.74 73.63 L34.74 74.14 L34.74 74.65 L34.74 75.16 L34.74 75.67 L34.74 76.18 L34.74 76.69 L34.74 77.20 L34.74 77.71 L34.74 78.22 L34.74 78.73 L34.74 79.24 L34.74 79.74 L34.74 80.25 L34.74 80.76 L34.74 81.27 L34.74 81.78 L34.75 82.29 L34.78 82.80 L34.81 83.31 L34.85 83.82 L34.89 84.32 L34.96 84.83 L35.05 85.33 L35.15 85.83 L35.27 86.32 L35.41 86.82 L35.55 87.31 L35.71 87.79 L35.88 88.27 L36.07 88.74 L36.27 89.21 L36.48 89.67 L36.71 90.13 L36.95 90.58 L37.20 91.02 L37.47 91.45 L37.75 91.88 L38.05 92.29 L38.35 92.70 L38.67 93.10 L39.00 93.49 L39.34 93.87 L39.69 94.23 L40.05 94.59 L40.42 94.95 L40.80 95.29 L41.19 95.62 L41.59 95.93 L42.00 96.24 L42.41 96.53 L42.84 96.81 L43.27 97.07 L43.72 97.32 L44.17 97.56 L44.62 97.79 L45.09 98.00 L45.56 98.20 L46.03 98.38 L46.51 98.55 L47.00 98.71 L47.48 98.86 L47.98 98.99 L48.47 99.11 L48.97 99.22 L49.47 99.31 L49.97 99.40 L50.47 99.48 L50.97 99.57 L51.48 99.65 L51.98 99.71 L52.49 99.77 L53.00 99.83 L53.50 99.88 L54.01 99.92 L54.52 99.96 L55.03 99.99 L55.54 100.00 L56.05 100.00 L56.55 100.00 L57.06 99.99 L57.57 99.99 L58.08 99.99 L58.59 99.99 L59.10 99.99 L59.61 99.98 L60.12 99.94 L60.63 99.89 L61.13 99.83 L61.64 99.79 L62.15 99.74 L62.65 99.68 L63.16 99.61 L63.66 99.53 L64.16 99.44 L64.66 99.35 L65.17 99.27 L65.67 99.17 L66.16 99.07 L66.66 98.95 L67.15 98.82 L67.65 98.69 L68.14 98.56 L68.63 98.43 L69.12 98.29 L69.61 98.14 L70.09 97.98 L70.57 97.81 L71.05 97.64 L71.53 97.47 L72.01 97.30 L72.49 97.12 L72.96 96.92 L73.42 96.72 L73.89 96.52 L74.36 96.31 L74.82 96.10 L75.28 95.89 L75.74 95.67 L76.20 95.44 L76.65 95.20 L77.10 94.96 L77.54 94.71 L77.98 94.46 L78.43 94.20 L78.87 93.95 L79.30 93.68 L79.73 93.41 L80.16 93.13 L80.58 92.85 L81.00 92.56 L81.42 92.27 L81.84 91.98 L82.25 91.68 L82.66 91.37 L83.06 91.06 L83.46 90.74 L83.86 90.42 L84.25 90.10 L84.64 89.77 L85.02 89.44 L85.40 89.10 L85.78 88.75 L86.15 88.40 L86.51 88.05 L86.88 87.69 L87.24 87.33 L87.59 86.96 L87.94 86.59 L88.28 86.22 L88.62 85.84 L88.95 85.45 L89.28 85.06 L89.60 84.67 L89.92 84.27 L90.24 83.87 L90.55 83.47 L90.86 83.06 L91.16 82.65 L91.46 82.24 L91.75 81.82 L92.03 81.40 L92.31 80.97 L92.59 80.54 L92.86 80.11 L93.12 79.67 L93.38 79.23 L93.63 78.79 L93.88 78.35 L94.13 77.90 L94.36 77.45 L94.60 77.00 L94.82 76.54 L95.04 76.08 L95.26 75.62 L95.46 75.15 L95.67 74.69 L95.86 74.22 L96.05 73.74 L96.23 73.27 L96.41 72.79 L96.59 72.31 L96.75 71.83 L96.91 71.35 L97.06 70.86 L97.21 70.37 L97.36 69.88 L97.50 69.39 L97.63 68.90 L97.75 68.41 L97.87 67.91 L97.97 67.41 L98.08 66.92 L98.19 66.42 L98.28 65.92 L98.36 65.41 L98.44 64.91 L98.51 64.41 L98.59 63.90 L98.66 63.40 L98.71 62.89 L98.76 62.38 L98.80 61.88 L98.83 61.37 L98.86 60.86 L98.89 60.35 L98.92 59.84 L98.93 59.33 L98.94 58.82 L98.94 58.31 L98.93 57.81 L98.93 57.30 L98.93 56.79 L98.93 56.28 L98.93 55.77 L98.93 55.26 L98.93 54.75 L98.93 54.24 L98.93 53.73 L98.93 53.22 L98.93 52.71 L98.93 52.20 L98.93 51.69 L98.93 51.18 L98.93 50.67 L98.93 50.16 L98.93 49.66 L98.93 49.15 L98.93 48.64 L98.93 48.13 L98.93 47.62 L98.93 47.11 L98.93 46.60 L98.93 46.09 L98.93 45.58 L98.93 45.07 L98.93 44.56 L98.93 44.05 L98.93 43.54 L98.93 43.03 L98.93 42.52 L98.93 42.01 L98.93 41.50 L98.93 41.00 L98.93 40.49 L98.93 39.98 L98.93 39.47 L98.93 38.96 L98.93 38.45 L98.93 37.94 L98.93 37.43 L98.93 36.92 L98.93 36.41 L98.93 35.90 L98.93 35.39 L98.93 34.88 L98.93 34.37 L98.93 33.86 L98.93 33.35 L98.93 32.84 L98.93 32.34 L98.93 31.83 L98.93 31.32 L98.93 30.81 L98.93 30.30 L98.93 29.79 L98.93 29.28 L98.93 28.77 L98.93 28.26 L98.93 27.75 L98.93 27.24 L98.93 26.73 L98.93 26.22 L98.93 25.71 L98.93 25.20 L98.93 24.69 L98.93 24.19 L98.93 23.68 L98.93 23.17 L98.93 22.66 L98.93 22.15 L98.93 21.64 L98.93 21.13 L98.93 20.62 L98.93 20.11 L98.93 19.60 L98.93 19.09 L98.93 18.58 L98.93 18.07 L98.93 17.56 L98.93 17.05 L98.93 16.54 L98.92 16.03 L98.91 15.53 L98.88 15.02 L98.83 14.51 L98.77 14.00 L98.68 13.50 L98.58 13.00 L98.47 12.51 L98.34 12.01 L98.19 11.53 L98.03 11.04 L97.85 10.57 L97.67 10.09 L97.47 9.62 L97.25 9.16 L97.01 8.71 L96.76 8.27 L96.50 7.83 L96.23 7.40 L95.95 6.98 L95.64 6.57 L95.33 6.17 L95.00 5.78 L94.66 5.40 L94.31 5.03 L93.95 4.67 L93.58 4.32 L93.20 3.98 L92.81 3.65 L92.41 3.34 L92.00 3.03 L91.58 2.74 L91.15 2.47 L90.71 2.21 L90.27 1.96 L89.82 1.73 L89.36 1.50 L88.89 1.30 L88.42 1.11 L87.94 0.93 L87.46 0.77 L86.97 0.63 L86.48 0.49 L85.98 0.38 L85.48 0.29 L84.98 0.20 L84.47 0.13 L83.97 0.07 L83.46 0.02 L82.95 0.00 L82.44 0.00 L81.93 0.01Z"/></svg><div class="boot-wordmark">awesome umi</div></div>
+</div>
+<div class="mesh"><i></i><i></i><i></i><div class="grid-bg"></div></div>
+
+<nav><div class="wrap">
+  <a class="logo hwlogo" href="#" aria-label="Awesome UMI"><svg class="nav-logo" viewBox="0 0 98.9 100" aria-hidden="true"><path d="M81.61 0.02 L81.10 0.05 L80.59 0.11 L80.09 0.19 L79.59 0.27 L79.08 0.36 L78.58 0.46 L78.09 0.59 L77.60 0.73 L77.12 0.90 L76.64 1.07 L76.17 1.26 L75.70 1.46 L75.24 1.67 L74.79 1.91 L74.34 2.16 L73.90 2.42 L73.47 2.69 L73.05 2.97 L72.63 3.26 L72.23 3.57 L71.84 3.90 L71.45 4.24 L71.08 4.58 L70.72 4.94 L70.37 5.31 L70.03 5.69 L69.70 6.08 L69.38 6.47 L69.07 6.88 L68.78 7.30 L68.50 7.73 L68.24 8.16 L67.99 8.61 L67.75 9.06 L67.53 9.52 L67.33 9.98 L67.14 10.46 L66.96 10.93 L66.79 11.41 L66.64 11.90 L66.51 12.39 L66.38 12.89 L66.28 13.39 L66.20 13.89 L66.13 14.39 L66.08 14.90 L66.04 15.41 L66.02 15.92 L66.02 16.43 L66.02 16.93 L66.02 17.44 L66.02 17.95 L66.02 18.46 L66.02 18.97 L66.02 19.48 L66.02 19.99 L66.02 20.50 L66.02 21.01 L66.02 21.52 L66.02 22.03 L66.02 22.54 L66.02 23.05 L66.02 23.56 L66.02 24.07 L66.02 24.58 L66.02 25.09 L66.02 25.59 L66.02 26.10 L66.02 26.61 L66.02 27.12 L66.02 27.63 L66.02 28.14 L66.02 28.65 L66.02 29.16 L66.02 29.67 L66.02 30.18 L66.02 30.69 L66.02 31.20 L66.02 31.71 L66.02 32.22 L66.02 32.73 L66.02 33.24 L66.02 33.75 L66.02 34.25 L66.02 34.76 L66.02 35.27 L66.02 35.78 L66.02 36.29 L66.02 36.80 L66.02 37.31 L66.02 37.82 L66.02 38.33 L66.02 38.84 L66.02 39.35 L66.02 39.86 L66.02 40.37 L66.02 40.88 L66.02 41.39 L66.02 41.90 L66.02 42.41 L66.02 42.91 L66.02 43.42 L66.02 43.93 L66.02 44.44 L66.02 44.95 L66.02 45.46 L66.01 45.97 L65.99 46.48 L65.95 46.99 L65.92 47.50 L65.88 48.00 L65.83 48.51 L65.76 49.01 L65.66 49.51 L65.54 50.01 L65.41 50.50 L65.27 50.99 L65.11 51.48 L64.94 51.96 L64.75 52.43 L64.55 52.90 L64.33 53.36 L64.09 53.81 L63.84 54.25 L63.58 54.69 L63.30 55.11 L63.00 55.53 L62.69 55.93 L62.37 56.33 L62.04 56.71 L61.70 57.09 L61.34 57.46 L60.98 57.81 L60.60 58.15 L60.21 58.48 L59.81 58.80 L59.41 59.11 L58.99 59.40 L58.56 59.68 L58.13 59.94 L57.68 60.19 L57.23 60.42 L56.77 60.64 L56.30 60.85 L55.83 61.03 L55.34 61.19 L54.86 61.34 L54.37 61.48 L53.87 61.61 L53.38 61.72 L52.88 61.81 L52.37 61.88 L51.86 61.93 L51.36 61.97 L50.85 61.99 L50.34 61.99 L49.83 61.99 L49.32 61.97 L48.81 61.94 L48.30 61.89 L47.80 61.82 L47.30 61.72 L46.80 61.61 L46.31 61.49 L45.82 61.35 L45.34 61.19 L44.86 61.01 L44.39 60.82 L43.92 60.60 L43.47 60.37 L43.02 60.13 L42.58 59.88 L42.14 59.62 L41.71 59.35 L41.29 59.06 L40.87 58.77 L40.47 58.45 L40.08 58.13 L39.71 57.78 L39.34 57.43 L38.99 57.06 L38.65 56.68 L38.32 56.29 L38.00 55.90 L37.69 55.49 L37.40 55.07 L37.12 54.65 L36.86 54.21 L36.60 53.77 L36.37 53.32 L36.14 52.86 L35.94 52.39 L35.75 51.92 L35.58 51.44 L35.43 50.95 L35.29 50.46 L35.16 49.97 L35.05 49.47 L34.95 48.97 L34.86 48.47 L34.79 47.97 L34.76 47.46 L34.74 46.95 L34.74 46.44 L34.74 45.93 L34.74 45.42 L34.74 44.91 L34.74 44.40 L34.74 43.89 L34.74 43.38 L34.74 42.87 L34.74 42.37 L34.74 41.86 L34.74 41.35 L34.74 40.84 L34.74 40.33 L34.74 39.82 L34.74 39.31 L34.74 38.80 L34.74 38.29 L34.74 37.78 L34.74 37.27 L34.74 36.76 L34.74 36.25 L34.74 35.74 L34.74 35.23 L34.74 34.72 L34.74 34.21 L34.74 33.71 L34.74 33.20 L34.74 32.69 L34.74 32.18 L34.74 31.67 L34.74 31.16 L34.74 30.65 L34.74 30.14 L34.74 29.63 L34.74 29.12 L34.74 28.61 L34.74 28.10 L34.74 27.59 L34.74 27.08 L34.74 26.57 L34.74 26.06 L34.74 25.56 L34.74 25.05 L34.74 24.54 L34.74 24.03 L34.74 23.52 L34.74 23.01 L34.74 22.50 L34.74 21.99 L34.74 21.48 L34.74 20.97 L34.74 20.46 L34.74 19.95 L34.74 19.44 L34.74 18.93 L34.74 18.42 L34.74 17.91 L34.74 17.40 L34.73 16.90 L34.71 16.39 L34.66 15.88 L34.59 15.38 L34.51 14.87 L34.42 14.37 L34.32 13.87 L34.21 13.37 L34.08 12.88 L33.93 12.39 L33.77 11.91 L33.59 11.43 L33.41 10.96 L33.21 10.49 L33.00 10.03 L32.77 9.57 L32.53 9.12 L32.28 8.68 L32.00 8.25 L31.72 7.83 L31.42 7.41 L31.12 7.01 L30.80 6.61 L30.48 6.21 L30.14 5.83 L29.79 5.46 L29.43 5.10 L29.05 4.76 L28.67 4.43 L28.27 4.10 L27.87 3.79 L27.46 3.48 L27.05 3.19 L26.62 2.91 L26.18 2.65 L25.74 2.40 L25.29 2.16 L24.84 1.93 L24.38 1.71 L23.91 1.51 L23.43 1.32 L22.95 1.16 L22.47 1.00 L21.98 0.86 L21.48 0.74 L20.99 0.63 L20.49 0.53 L19.99 0.44 L19.48 0.37 L18.97 0.32 L18.47 0.28 L17.96 0.26 L17.45 0.26 L16.94 0.26 L16.43 0.28 L15.92 0.31 L15.41 0.36 L14.91 0.42 L14.40 0.49 L13.90 0.59 L13.41 0.70 L12.91 0.81 L12.42 0.95 L11.93 1.10 L11.45 1.27 L10.98 1.45 L10.51 1.65 L10.04 1.86 L9.58 2.08 L9.13 2.31 L8.68 2.55 L8.24 2.81 L7.81 3.09 L7.40 3.38 L6.98 3.68 L6.58 3.99 L6.18 4.31 L5.80 4.64 L5.42 4.98 L5.05 5.33 L4.69 5.69 L4.35 6.07 L4.02 6.45 L3.70 6.85 L3.39 7.26 L3.09 7.67 L2.81 8.09 L2.53 8.52 L2.27 8.96 L2.02 9.40 L1.79 9.86 L1.57 10.32 L1.37 10.78 L1.18 11.26 L1.00 11.73 L0.83 12.21 L0.68 12.70 L0.54 13.19 L0.42 13.69 L0.31 14.18 L0.22 14.68 L0.14 15.19 L0.08 15.69 L0.03 16.20 L0.01 16.71 L0.00 17.22 L0.00 17.73 L0.00 18.24 L0.00 18.75 L0.00 19.26 L0.00 19.77 L0.00 20.28 L0.00 20.79 L0.00 21.29 L0.00 21.80 L0.00 22.31 L0.00 22.82 L0.00 23.33 L0.00 23.84 L0.00 24.35 L0.00 24.86 L0.00 25.37 L0.01 25.88 L0.02 26.39 L0.06 26.90 L0.12 27.40 L0.18 27.91 L0.26 28.41 L0.36 28.91 L0.48 29.41 L0.61 29.90 L0.76 30.38 L0.92 30.87 L1.09 31.35 L1.27 31.82 L1.47 32.29 L1.68 32.76 L1.91 33.21 L2.15 33.66 L2.41 34.10 L2.67 34.54 L2.95 34.96 L3.24 35.38 L3.54 35.79 L3.86 36.19 L4.18 36.58 L4.52 36.97 L4.87 37.34 L5.23 37.70 L5.60 38.04 L5.98 38.38 L6.37 38.71 L6.77 39.03 L7.18 39.33 L7.60 39.62 L8.03 39.90 L8.46 40.16 L8.90 40.42 L9.34 40.67 L9.79 40.93 L10.23 41.18 L10.67 41.43 L11.11 41.68 L11.55 41.94 L11.99 42.20 L12.43 42.46 L12.87 42.72 L13.30 42.98 L13.74 43.24 L14.19 43.49 L14.63 43.75 L15.07 44.00 L15.51 44.25 L15.95 44.50 L16.40 44.76 L16.84 45.01 L17.28 45.26 L17.72 45.51 L18.17 45.77 L18.61 46.02 L19.05 46.28 L19.49 46.54 L19.93 46.79 L20.37 47.05 L20.81 47.31 L21.25 47.56 L21.69 47.82 L22.13 48.07 L22.57 48.33 L23.01 48.58 L23.45 48.84 L23.89 49.09 L24.33 49.35 L24.77 49.60 L25.22 49.86 L25.66 50.11 L26.10 50.36 L26.54 50.62 L26.98 50.88 L27.40 51.16 L27.82 51.45 L28.23 51.76 L28.63 52.07 L29.02 52.40 L29.40 52.74 L29.77 53.09 L30.13 53.44 L30.48 53.82 L30.82 54.20 L31.14 54.59 L31.45 55.00 L31.75 55.41 L32.04 55.83 L32.31 56.26 L32.58 56.70 L32.82 57.14 L33.06 57.59 L33.27 58.05 L33.47 58.52 L33.66 59.00 L33.84 59.47 L34.00 59.96 L34.15 60.44 L34.28 60.94 L34.39 61.43 L34.49 61.93 L34.57 62.44 L34.65 62.94 L34.71 63.44 L34.73 63.95 L34.74 64.46 L34.74 64.97 L34.74 65.48 L34.74 65.99 L34.74 66.50 L34.74 67.01 L34.74 67.52 L34.74 68.03 L34.74 68.54 L34.74 69.05 L34.74 69.56 L34.74 70.07 L34.74 70.58 L34.74 71.09 L34.74 71.59 L34.74 72.10 L34.74 72.61 L34.74 73.12 L34.74 73.63 L34.74 74.14 L34.74 74.65 L34.74 75.16 L34.74 75.67 L34.74 76.18 L34.74 76.69 L34.74 77.20 L34.74 77.71 L34.74 78.22 L34.74 78.73 L34.74 79.24 L34.74 79.74 L34.74 80.25 L34.74 80.76 L34.74 81.27 L34.74 81.78 L34.75 82.29 L34.78 82.80 L34.81 83.31 L34.85 83.82 L34.89 84.32 L34.96 84.83 L35.05 85.33 L35.15 85.83 L35.27 86.32 L35.41 86.82 L35.55 87.31 L35.71 87.79 L35.88 88.27 L36.07 88.74 L36.27 89.21 L36.48 89.67 L36.71 90.13 L36.95 90.58 L37.20 91.02 L37.47 91.45 L37.75 91.88 L38.05 92.29 L38.35 92.70 L38.67 93.10 L39.00 93.49 L39.34 93.87 L39.69 94.23 L40.05 94.59 L40.42 94.95 L40.80 95.29 L41.19 95.62 L41.59 95.93 L42.00 96.24 L42.41 96.53 L42.84 96.81 L43.27 97.07 L43.72 97.32 L44.17 97.56 L44.62 97.79 L45.09 98.00 L45.56 98.20 L46.03 98.38 L46.51 98.55 L47.00 98.71 L47.48 98.86 L47.98 98.99 L48.47 99.11 L48.97 99.22 L49.47 99.31 L49.97 99.40 L50.47 99.48 L50.97 99.57 L51.48 99.65 L51.98 99.71 L52.49 99.77 L53.00 99.83 L53.50 99.88 L54.01 99.92 L54.52 99.96 L55.03 99.99 L55.54 100.00 L56.05 100.00 L56.55 100.00 L57.06 99.99 L57.57 99.99 L58.08 99.99 L58.59 99.99 L59.10 99.99 L59.61 99.98 L60.12 99.94 L60.63 99.89 L61.13 99.83 L61.64 99.79 L62.15 99.74 L62.65 99.68 L63.16 99.61 L63.66 99.53 L64.16 99.44 L64.66 99.35 L65.17 99.27 L65.67 99.17 L66.16 99.07 L66.66 98.95 L67.15 98.82 L67.65 98.69 L68.14 98.56 L68.63 98.43 L69.12 98.29 L69.61 98.14 L70.09 97.98 L70.57 97.81 L71.05 97.64 L71.53 97.47 L72.01 97.30 L72.49 97.12 L72.96 96.92 L73.42 96.72 L73.89 96.52 L74.36 96.31 L74.82 96.10 L75.28 95.89 L75.74 95.67 L76.20 95.44 L76.65 95.20 L77.10 94.96 L77.54 94.71 L77.98 94.46 L78.43 94.20 L78.87 93.95 L79.30 93.68 L79.73 93.41 L80.16 93.13 L80.58 92.85 L81.00 92.56 L81.42 92.27 L81.84 91.98 L82.25 91.68 L82.66 91.37 L83.06 91.06 L83.46 90.74 L83.86 90.42 L84.25 90.10 L84.64 89.77 L85.02 89.44 L85.40 89.10 L85.78 88.75 L86.15 88.40 L86.51 88.05 L86.88 87.69 L87.24 87.33 L87.59 86.96 L87.94 86.59 L88.28 86.22 L88.62 85.84 L88.95 85.45 L89.28 85.06 L89.60 84.67 L89.92 84.27 L90.24 83.87 L90.55 83.47 L90.86 83.06 L91.16 82.65 L91.46 82.24 L91.75 81.82 L92.03 81.40 L92.31 80.97 L92.59 80.54 L92.86 80.11 L93.12 79.67 L93.38 79.23 L93.63 78.79 L93.88 78.35 L94.13 77.90 L94.36 77.45 L94.60 77.00 L94.82 76.54 L95.04 76.08 L95.26 75.62 L95.46 75.15 L95.67 74.69 L95.86 74.22 L96.05 73.74 L96.23 73.27 L96.41 72.79 L96.59 72.31 L96.75 71.83 L96.91 71.35 L97.06 70.86 L97.21 70.37 L97.36 69.88 L97.50 69.39 L97.63 68.90 L97.75 68.41 L97.87 67.91 L97.97 67.41 L98.08 66.92 L98.19 66.42 L98.28 65.92 L98.36 65.41 L98.44 64.91 L98.51 64.41 L98.59 63.90 L98.66 63.40 L98.71 62.89 L98.76 62.38 L98.80 61.88 L98.83 61.37 L98.86 60.86 L98.89 60.35 L98.92 59.84 L98.93 59.33 L98.94 58.82 L98.94 58.31 L98.93 57.81 L98.93 57.30 L98.93 56.79 L98.93 56.28 L98.93 55.77 L98.93 55.26 L98.93 54.75 L98.93 54.24 L98.93 53.73 L98.93 53.22 L98.93 52.71 L98.93 52.20 L98.93 51.69 L98.93 51.18 L98.93 50.67 L98.93 50.16 L98.93 49.66 L98.93 49.15 L98.93 48.64 L98.93 48.13 L98.93 47.62 L98.93 47.11 L98.93 46.60 L98.93 46.09 L98.93 45.58 L98.93 45.07 L98.93 44.56 L98.93 44.05 L98.93 43.54 L98.93 43.03 L98.93 42.52 L98.93 42.01 L98.93 41.50 L98.93 41.00 L98.93 40.49 L98.93 39.98 L98.93 39.47 L98.93 38.96 L98.93 38.45 L98.93 37.94 L98.93 37.43 L98.93 36.92 L98.93 36.41 L98.93 35.90 L98.93 35.39 L98.93 34.88 L98.93 34.37 L98.93 33.86 L98.93 33.35 L98.93 32.84 L98.93 32.34 L98.93 31.83 L98.93 31.32 L98.93 30.81 L98.93 30.30 L98.93 29.79 L98.93 29.28 L98.93 28.77 L98.93 28.26 L98.93 27.75 L98.93 27.24 L98.93 26.73 L98.93 26.22 L98.93 25.71 L98.93 25.20 L98.93 24.69 L98.93 24.19 L98.93 23.68 L98.93 23.17 L98.93 22.66 L98.93 22.15 L98.93 21.64 L98.93 21.13 L98.93 20.62 L98.93 20.11 L98.93 19.60 L98.93 19.09 L98.93 18.58 L98.93 18.07 L98.93 17.56 L98.93 17.05 L98.93 16.54 L98.92 16.03 L98.91 15.53 L98.88 15.02 L98.83 14.51 L98.77 14.00 L98.68 13.50 L98.58 13.00 L98.47 12.51 L98.34 12.01 L98.19 11.53 L98.03 11.04 L97.85 10.57 L97.67 10.09 L97.47 9.62 L97.25 9.16 L97.01 8.71 L96.76 8.27 L96.50 7.83 L96.23 7.40 L95.95 6.98 L95.64 6.57 L95.33 6.17 L95.00 5.78 L94.66 5.40 L94.31 5.03 L93.95 4.67 L93.58 4.32 L93.20 3.98 L92.81 3.65 L92.41 3.34 L92.00 3.03 L91.58 2.74 L91.15 2.47 L90.71 2.21 L90.27 1.96 L89.82 1.73 L89.36 1.50 L88.89 1.30 L88.42 1.11 L87.94 0.93 L87.46 0.77 L86.97 0.63 L86.48 0.49 L85.98 0.38 L85.48 0.29 L84.98 0.20 L84.47 0.13 L83.97 0.07 L83.46 0.02 L82.95 0.00 L82.44 0.00 L81.93 0.01Z"/></svg><span>umi</span><i>(awesome)</i></a>
+  <div class="links"><a href="#featured">Featured</a><a href="#browse" data-go="devices">Devices</a><a href="#browse" data-go="datasets">Datasets</a><a href="#browse" data-go="repos">Code</a></div>
+  <div class="sp"></div>
+  <button class="ibtn" id="theme" aria-label="Toggle theme">◐</button>
+</div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hg">
+      <div class="ht">
+        <span class="eyebrow"><b>Open source</b> Free for everyone</span>
+        <h1>Every UMI device,<br><em>in one place</em></h1>
+        <p class="lead">A free, open collection of UMI grippers, gloves and wearables, with their datasets and code. Check back for what’s new.</p>
+        <div class="sbox">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b3b3b3" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" placeholder="Search devices, datasets, labs…" autocomplete="off"><kbd>/</kbd>
+        </div>
+        <div class="stats" id="stats"></div>
+      </div>
+      <div class="hv"><div class="hw"><img class="hw-fallback" src="assets/hands.png" alt="A UMI gripper held by a hand, with real hands reaching in around it toward a glowing stone that floats out of reach, labelled DATA"><canvas class="hw-art" role="img" aria-label="A hand holds the UMI device directly, with fingers gripping its sides and an apple just out of reach"></canvas></div></div>
+    </div>
+  </header>
+  <div class="marq"><div id="marq"></div></div>
+
+  <section id="featured">
+    <h2 class="t">Featured</h2><p class="sub">Start with the originals and the most active open projects.</p>
+    <div class="bento" id="bento"></div>
+  </section>
+
+  <section id="browse">
+    <h2 class="t">Browse everything</h2><p class="sub">Browse by type or use search to find a specific item.</p>
+    <div class="ctrl"><div class="tabs" id="tabs"></div></div>
+    <div class="rc" id="rc"></div>
+    <div id="out"></div>
+  </section>
+
+  <footer>
+    This is an independent compilation of UMI-related resources. The directory's original content and code are licensed under the <a href="https://opensource.org/license/mit/" target="_blank" rel="noopener">MIT License</a>. Listed projects, datasets, names and preview images remain the property of their respective owners and are subject to their own licenses. Inclusion does not imply ownership, affiliation or endorsement.
+  </footer>
+</div>
+
+<div class="dr-bg" id="drbg"></div>
+<aside class="dr" id="dr" role="dialog" aria-modal="true" aria-label="Dataset details"><div class="dr-top"><span>Dataset details</span><button class="dr-x" id="drx" aria-label="Close">✕</button></div><div class="dr-in" id="drb"></div></aside>
+<script src="data.js"></script>
+<script>
+const _t=new URLSearchParams(location.search).get('theme');if(_t)document.documentElement.dataset.theme=_t;
+const D=window.UMI_DATA,$=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'k':String(n);
+const hue=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))%360;return h};
+const art=(t,sub)=>{const h=hue(t);return `<div class="art" style="background:linear-gradient(135deg,hsl(${h} 75% 48%),hsl(${(h+55)%360} 80% 38%))"><b>${esc(sub||t)}</b></div>`};
+const initials=n=>{n=n.split(' /')[0];return n.length<=12?n:n.split(/[\s_-]+/).map(w=>w[0]).join('').slice(0,4).toUpperCase()};
+let tab='devices',q='',more={};
+const maxDl=Math.max(...D.datasets.map(d=>d.downloads));
+
+/* homepage UMI illustration */
+(function(){
+ const canvas=$('.hw-art'),fallback=$('.hw-fallback');if(!canvas)return;
+ fetch('assets/hero.json').then(r=>{if(!r.ok)throw new Error(`Hero artwork request failed: ${r.status}`);return r.json()}).then(J=>{
+  const {w:W,h:H,layers,frames}=J,ctx=canvas.getContext('2d'),scale=6;
+  if(!ctx)throw new Error('Could not initialize the homepage artwork canvas.');
+  canvas.width=W*scale;canvas.height=H*scale;ctx.scale(scale,scale);
+  const draw=(coords,alpha=.72,dy=0,stride=2,filter=()=>true)=>{
+   for(let i=0;i<coords.length;i+=stride){
+    const x=coords[i],y=coords[i+1];if(!filter(x,y)||Math.random()<.035)continue;
+    ctx.globalAlpha=alpha+Math.random()*(1-alpha);ctx.fillRect(x,y+dy,1,1);
+   }
+  };
+  const draw3=(coords,alpha)=>{for(let i=0;i<coords.length;i+=2){if(Math.random()<.015)continue;ctx.globalAlpha=alpha+Math.random()*(1-alpha);ctx.fillRect(coords[i]/3,coords[i+1]/3,1/3,1/3)}};
+  fallback.hidden=false;
+  const render=()=>{
+   if(!canvas.isConnected)return;
+   ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';
+   const fr=frames.find(f=>f.theta===20)||frames[0];
+   draw(layers.hands,.7);draw(layers.palm,.8);draw3(layers.stone3||[],.82);draw(layers.label||[],.92);draw(layers.glow,.34);draw(fr.fill,.8);draw(fr.edge,.74);
+   layers.rays.forEach(ray=>draw(ray,.38,0,3));
+   ctx.globalAlpha=1;fallback.hidden=true;
+   setTimeout(render,160);
+  };
+  render();
+ }).catch(e=>console.error('Could not load the corrected homepage artwork; showing the original preview instead.',e));
+})();
+
+/* stats + marquee */
+function count(el,to){let s=null;const f=t=>{s??=t;const p=Math.min((t-s)/1100,1);el.textContent=fmt(Math.round(to*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
+$('#stats').innerHTML=[[D.devices.length,'devices'],[D.datasets.length,'datasets'],[D.repos.length,'repos'],[D.datasets.reduce((a,d)=>a+d.downloads,0),'downloads']].map(([n,l])=>`<div class="stat"><b data-n="${n}">0</b><span>${l}</span></div>`).join('');
+document.querySelectorAll('[data-n]').forEach(e=>count(e,+e.dataset.n));
+const names=[...D.devices.map(d=>[d.name,d.url]),...D.repos.slice(0,10).map(r=>[r.name.split('/')[1],r.url])];
+$('#marq').innerHTML=[...names,...names].map(([n,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a>`).join('');
+
+/* featured bento */
+const gh=s=>'https://opengraph.githubassets.com/1/'+s;
+const B=[
+ {c:'s4 big',tag:'The original',t:'Universal Manipulation Interface',img:'assets/figures/umi.jpg',pos:'50% 60%',p:'Stanford’s in-the-wild robot teaching system: handheld gripper, SLAM pipeline and policy training.',g:'#4f46e5,#0ea5e9',i:'UMI',u:'https://umi-gripper.github.io/'},
+ {c:'s2 big',tag:'Most downloaded',t:'RealOmin 10Kh',img:'img/featured-realomin.jpg',pos:'50% 50%',p:'13,000+ hours of manipulation data from GenRobot.',g:'#0ea5e9,#6366f1',u:'https://huggingface.co/datasets/genrobot2025/10Kh-RealOmin-OpenData',i:'10K'},
+ {c:'s3 jp',tag:'Japan · Airoa',t:'YUBI by Airoa',img:'img/38988e829d.jpg',pos:'50% 40%',p:'Open dexterous gripper stack with public UMI-arena datasets on Hugging Face.',g:'#737373,#7c1d6f',u:'https://yubi.airoa.io/',i:'YUBI'},
+ {c:'s3',tag:'Open hardware',t:'Grabette',img:'img/featured-grabette.jpg',pos:'50% 50%',p:'Low-cost handheld gripper from Pollen Robotics with LeRobot output.',g:'#808080,#9a9a9a',i:'Grabette',u:'https://huggingface.co/blog/grabette'},
+ {c:'s2',tag:'Wearable',t:'HandUMI',img:'img/featured-handumi.jpg',pos:'50% 100%',p:'Hand-worn UMI for bimanual data without a robot.',g:'#10b981,#0369a1',i:'Hand',u:'https://github.com/murobotics-ai/handumi-hw'},
+ {c:'s2',tag:'Force sensing',t:'UMI-FT',img:'img/featured-umift.jpg',pos:'50% 50%',p:'Per-finger force/torque for compliant manipulation.',g:'#a855f7,#ec4899',i:'FT',u:'https://umi-ft.github.io/'},
+ {c:'s2',tag:'Dexterous',t:'DexUMI',img:'assets/figures/dexumi.jpg',pos:'50% 50%',p:'The human hand as the interface for dexterous robots.',g:'#06b6d4,#4f46e5',i:'Dex',u:'https://dex-umi.github.io/'}];
+$('#bento').innerHTML=B.map(b=>{const bg=b.img?`--img:url(${b.img});--pos:${b.pos||'50% 50%'}`:`background:linear-gradient(135deg,${b.g})`;
+ return `<a class="bt ${b.c}" href="${esc(b.u)}" target="_blank" rel="noopener"><div class="bg${b.img?' im':''}" style="${bg}"></div>${b.i&&!b.img?`<span class="ghost">${esc(b.i)}</span>`:''}<div class="in"><span class="tag">${esc(b.tag)}</span><h3>${esc(b.t)}</h3><p>${esc(b.p)}</p></div></a>`}).join('');
+
+/* browse */
+const TABS=[['devices','Devices',D.devices.length],['datasets','Datasets',D.datasets.length],['repos','Code',D.repos.length]];
+$('#tabs').innerHTML=TABS.map(([k,l,n])=>`<button class="tab" data-k="${k}">${l}<small>${n}</small></button>`).join('');
+$('#tabs').onclick=e=>{const k=e.target.closest('.tab')?.dataset.k;if(k){tab=k;render()}};
+document.querySelectorAll('[data-go]').forEach(a=>a.onclick=()=>{tab=a.dataset.go;render()});
+$('#q').oninput=e=>{q=e.target.value.toLowerCase().trim();render();if(q)$('#browse').scrollIntoView({block:'start'})};
+addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==$('#q')){e.preventDefault();$('#q').focus()}});
+$('#theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=(r.dataset.theme==='light'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:light)').matches))?'dark':'light'};
+
+const imgTag=(src,fallback)=>src?`<img loading="lazy" referrerpolicy="no-referrer" src="${esc(src)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{innerHTML:this.dataset.f}).firstChild)" data-f="${esc(fallback)}">`:fallback;
+function items(){
+ if(tab==='datasets')return D.datasets.map(d=>{const nm=d.id.split('/')[1];return{cat:d.family,html:`<article class="card ds" data-id="${esc(d.id)}" tabindex="0"><div class="thumb">${art(d.family+nm,initials(d.family.split(' ')[0]))}<span class="badge">${esc(d.family)}</span>${d.gated?'<span class="badge r gate">Gated</span>':''}</div><div class="body"><h3>${esc(nm)}</h3><div class="org">by <b>${esc(d.id.split('/')[0])}</b> · updated ${esc(d.updated||'n/a')}</div><div class="bar"><i style="width:${Math.max(3,Math.sqrt(d.downloads/maxDl)*100)}%"></i></div><div class="mt"><span><b>${fmt(d.downloads)}</b> downloads</span>${d.likes?`<span><b>${d.likes}</b> likes</span>`:''}</div><div class="row"><span class="lk p">View details →</span></div></div></article>`,s:d.id+' '+d.family}});
+ if(tab==='devices')return D.devices.map(d=>{const src=d.img;const open=/proprietary/i.test(d.license),lic=d.license||'';const fb=art(d.name,initials(d.name));
+  const code=d.links.find(l=>l.t==='code'),paper=d.links.find(l=>l.t==='paper');
+  return{cat:d.category,buy:!!d.buy,html:`<article class="card"><div class="thumb">${imgTag(src,fb)}</div><div class="body"><h3>${esc(d.name)}${d.stars?` <span style="color:var(--mut);font-weight:500;font-size:13px">★ ${esc(d.stars)}</span>`:''}</h3><div class="tags"><span class="tg">${esc(d.category)}</span>${lic?`<span class="tg ${open?'prop':/MIT|Apache|open/i.test(lic)?'open':''}">${esc(lic)}</span>`:''}${d.buy?`<span class="tg sale">${d.buy.type==='buy'?'For sale':'On request'}</span>`:''}</div><div class="org"><b>${esc(d.org)}</b>${d.year?' · '+esc(d.year):''}</div><p>${esc(d.summary)}</p><div class="row">${d.buy?`<a class="lk buy" href="${esc(d.buy.url)}" target="_blank" rel="noopener">${d.buy.type==='buy'?'Buy'+(d.buy.price?' · '+esc(d.buy.price):'')+' ↗':'Get a quote ↗'}</a>`:''}<a class="lk ${d.buy?'':'p'}" href="${esc(d.url)}" target="_blank" rel="noopener">Website ↗</a>${paper?`<a class="lk" href="${esc(paper.u)}" target="_blank" rel="noopener">Paper</a>`:''}${code?`<a class="lk" href="${esc(code.u)}" target="_blank" rel="noopener">Code</a>`:''}</div></div></article>`,s:[d.name,d.org,d.summary,d.license,d.category].join(' ')}});
+ return D.repos.map(r=>({cat:r.section,html:`<article class="card"><div class="thumb">${imgTag('',art(r.name,initials(r.name.split('/')[1]||r.name)))}<span class="badge">${esc(r.section)}</span></div><div class="body"><h3>${esc(r.name)}${r.stars?` <span style="color:var(--mut);font-weight:500;font-size:13px">★ ${esc(r.stars)}</span>`:''}</h3><p>${esc(r.desc)}</p><div class="row"><a class="lk p" href="${esc(r.url)}" target="_blank" rel="noopener">GitHub ↗</a></div></div></article>`,s:r.name+' '+r.desc+' '+r.section}));
+}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px 80px'});
+const moreObserver=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.click()}),{rootMargin:'0px 0px 240px'});
+const skel=()=>`<div class="grid">${'<article class="card in sk"><div class="thumb"></div><div class="body"><i class="sl t"></i><i class="sl w40"></i><i class="sl"></i><i class="sl w80"></i></div></article>'.repeat(8)}</div>`;
+function render(){
+ if(!window.__rd){window.__rd=1;$('#out').innerHTML=skel();setTimeout(render,550);return}
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.k===tab));
+ const all=items();
+ const list=all.filter(i=>!q||i.s.toLowerCase().includes(q));
+ const key=tab+q,n=more[key]||48,shown=list.slice(0,n);
+ $('#rc').textContent=`${list.length} result${list.length===1?'':'s'}`;
+ $('#out').innerHTML=shown.length?`<div class="grid">${shown.map(i=>i.html).join('')}</div>`+(list.length>n?`<button class="more" id="more">Show ${Math.min(list.length-n,9999)} more</button>`:''):'<div class="empty">Nothing matches that. Try another word.</div>';
+ document.querySelectorAll('#out .card').forEach(c=>io.observe(c));
+ document.querySelectorAll('.thumb img').forEach(i=>{if(i.complete&&i.naturalWidth)i.classList.add('ok')});
+ const m=$('#more');if(m){m.onclick=()=>{more[key]=Math.min(list.length,n+48);render()};moreObserver.observe(m)}
+}
+if(['datasets','devices','repos'].includes(location.hash.slice(1)))tab=location.hash.slice(1);
+render();
+
+/* boot intro */
+(function(){const b=document.getElementById('boot');if(!b)return;let seen=false;try{seen=sessionStorage.getItem('umiBooted')}catch(e){}
+const force=/[?&]intro=1/.test(location.search);
+if((seen&&!force)||location.hash.length>1||matchMedia('(prefers-reduced-motion:reduce)').matches){b.remove();return}
+document.body.classList.add('lock');b.classList.add('go');
+const done=()=>{if(b.dataset.d)return;b.dataset.d=1;try{sessionStorage.setItem('umiBooted',1)}catch(e){}b.classList.add('out');document.body.classList.remove('lock');setTimeout(()=>b.remove(),1100)};
+setTimeout(done,3900);b.onclick=done;addEventListener('keydown',done,{once:true});})();
+
+/* dataset side panel */
+const dr=$('#dr'),drbg=$('#drbg'),drb=$('#drb');let cur=null;
+const clean=t=>String(t||'').replace(/\t/g,'').replace(/\r/g,'').replace(/\n{3,}/g,'\n\n').trim().slice(0,4500);
+function descHtml(t){return clean(t).split(/\n{2,}/).map(b=>{b=b.trim();if(!b)return'';const m=b.match(/^#{1,6}\s*(.+)/);return m&&!b.includes('\n')?`<h5>${esc(m[1])}</h5>`:`<p>${esc(b.replace(/^#{1,6}\s*/gm,'')).replace(/\n/g,'<br>')}</p>`}).join('')}
+function drHtml(d,live){
+ const cmd=`hf download ${d.id} --repo-type dataset`;
+ const dl=live?.downloads??d.downloads,lk=live?.likes??d.likes;
+ const pills=[d.gated?['Gated','g']:['Open','f'],d.license&&['License: '+d.license],d.size&&['Size: '+d.size],...(d.modality||[]).map(m=>[m]),d.family&&[d.family]].filter(Boolean);
+ return `<h2>${esc(d.title||d.id.split('/')[1])}</h2><div class="by">${esc(d.id)}</div>
+ <div class="pl">${pills.map(p=>`<span class="${p[1]||''}">${esc(p[0])}</span>`).join('')}</div>
+ ${d.gated?'<div class="note"><b>Access is gated.</b> You need a Hugging Face account and must request access and accept the dataset terms before you can download it.</div>':''}
+ <div class="kv"><div><b>${fmt(dl)}</b><span>downloads</span></div><div><b>${lk}</b><span>likes</span></div><div><b>${esc(d.updated||'n/a')}</b><span>last updated</span></div><div><b>${d.files?fmt(d.files):'n/a'}</b><span>files</span></div></div>
+ <h4>About</h4><div class="desc" id="drdesc">${live?.description?descHtml(live.description)||'<p>No description provided.</p>':'<div class="dr-ld"><i class="sl t"></i><i class="sl"></i><i class="sl"></i><i class="sl w80"></i><i class="sl w60"></i></div>'}</div>
+ <h4>Download</h4><div class="code">${esc(cmd)}<button id="cp">Copy</button></div>
+ <div class="dr-act"><a class="p" href="${esc(d.url)}" target="_blank" rel="noopener">Open on Hugging Face ↗</a><a href="${esc(d.url)}/viewer" target="_blank" rel="noopener">Data viewer ↗</a></div>`;
+}
+async function openDr(id){
+ const d=D.datasets.find(x=>x.id===id);if(!d)return;cur=id;
+ drb.innerHTML=drHtml(d);drb.scrollTop=0;dr.classList.add('open');drbg.classList.add('open');document.body.classList.add('lock');
+ history.replaceState(null,'','#ds='+id);
+ $('#cp').onclick=e=>{navigator.clipboard?.writeText(`hf download ${id} --repo-type dataset`);e.target.textContent='Copied'};
+ try{const r=await fetch('https://huggingface.co/api/datasets/'+id);const j=await r.json();if(cur!==id)return;drb.innerHTML=drHtml(d,j);drb.scrollTop=0;$('#cp').onclick=e=>{navigator.clipboard?.writeText(`hf download ${id} --repo-type dataset`);e.target.textContent='Copied'}}
+ catch(e){if(cur===id){const el=$('#drdesc');if(el)el.innerHTML='<p>Could not load the description. Open the dataset on Hugging Face for the full card.</p>'}}
+}
+function closeDr(){cur=null;dr.classList.remove('open');drbg.classList.remove('open');document.body.classList.remove('lock');history.replaceState(null,'',location.pathname+location.search)}
+$('#out').addEventListener('click',e=>{const c=e.target.closest('.card.ds');if(c&&!e.target.closest('a'))openDr(c.dataset.id)});
+$('#out').addEventListener('keydown',e=>{if(e.key==='Enter'){const c=e.target.closest('.card.ds');if(c)openDr(c.dataset.id)}});
+$('#drx').onclick=closeDr;drbg.onclick=closeDr;
+addEventListener('keydown',e=>{if(e.key==='Escape'&&cur)closeDr()});
+if(location.hash.startsWith('#ds=')){tab='datasets';render();openDr(decodeURIComponent(location.hash.slice(4)))}
+
+document.addEventListener('load',e=>{if(e.target.tagName==='IMG')e.target.classList.add('ok')},true);
+</script>
+</body>
+</html>
