@@ -1,10 +1,28 @@
-# Awesome UMI
+<p align="center">
+  <a href="https://awesome-umi.vercel.app/"><img src="site/logo.svg" width="76" alt="Awesome UMI"></a>
+</p>
 
-A curated list of open-source resources for the **Universal Manipulation Interface (UMI)** and UMI-style systems. UMI uses handheld grippers to collect in-the-wild robot demonstrations, then trains policies that transfer to real robots.
+<h1 align="center">Awesome UMI: an illustrated field guide</h1>
 
-Original paper and code: [*Universal Manipulation Interface: In-The-Wild Robot Teaching Without In-The-Wild Robots*](https://github.com/real-stanford/universal_manipulation_interface) (Stanford).
+<p align="center">
+  <a href="https://awesome-umi.vercel.app/"><img src="https://img.shields.io/badge/website-live-111111?style=for-the-badge&logo=vercel&logoColor=white" alt="Live website"></a>
+  <a href="#device-catalog"><img src="https://img.shields.io/badge/robotics-UMI_devices-7c3aed?style=for-the-badge" alt="Robotics and UMI devices"></a>
+  <a href="#core"><img src="https://img.shields.io/badge/robot_manipulation-imitation_learning-0891b2?style=for-the-badge" alt="Robot manipulation and imitation learning"></a>
+  <a href="#datasets"><img src="https://img.shields.io/badge/datasets_and_code-open_resources-059669?style=for-the-badge" alt="Datasets and code"></a>
+</p>
 
-Star counts are a snapshot from 2026-11-05.
+<p align="center">
+  <a href="https://awesome-umi.vercel.app/"><img src="site/screenshot-home.png" width="49%" alt="Awesome UMI website homepage"></a>
+  <a href="https://awesome-umi.vercel.app/#featured"><img src="site/screenshot-featured.png" width="49%" alt="Featured UMI projects on the website"></a>
+</p>
+
+<p align="center">
+  <strong>Discover the devices, datasets, papers, and code bringing in-the-wild robot teaching to life.</strong>
+</p>
+
+This community-curated collection covers the **Universal Manipulation Interface (UMI)** and related systems, from handheld grippers and wearable devices to tactile sensing and large-scale datasets.
+
+Start with Stanford's original [paper and code](https://github.com/real-stanford/universal_manipulation_interface).
 
 ## Contents
 
@@ -202,7 +220,7 @@ Each line gives the organization, first public year and license. Ordered oldest 
 
 ## Contributing
 
-Pull requests are welcome. To add something, put one line in the right section, in the same format as its neighbours:
+Contributions are welcome via pull requests. Fork the repository, create a branch, and add the item to the matching section below. The website catalog is generated from this README, so update the README rather than editing `site/data.js` directly.
 
 - **A repo** (the sections above the device catalog):
   `- [owner/repo](https://github.com/owner/repo) ⭐ 120: what it is, in one sentence.` Leave out the stars if you don't know them.
@@ -210,4 +228,4 @@ Pull requests are welcome. To add something, put one line in the right section, 
   `- [Name](https://project-page) - what it is — Organization, year, license ([paper](https://arxiv.org/abs/0000.00000), [code](https://github.com/owner/repo)).`
 - **A dataset** (under [Datasets](#datasets)): name, what kind, who made it, and its size.
 
-Please only add work that is open source or clearly about UMI, and link to a primary source (the paper, project page or repo). Keep each entry to a single line.
+Please only add work that is open source or clearly about UMI. Link to a primary source (the paper, project page, or repository), avoid duplicates, and keep each entry to a single line in the same style as its neighbours. In your pull request, briefly describe the addition and include any relevant source links.
