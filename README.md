@@ -6,21 +6,6 @@ Original paper and code: [*Universal Manipulation Interface: In-The-Wild Robot T
 
 Star counts are a snapshot from 2026-11-05.
 
-## Website
-
-A static, searchable site lives in [`site/`](site/). It has no build step: open it through any static server, or deploy the folder to GitHub Pages, Netlify or Vercel.
-
-```bash
-cd site && python3 -m http.server 8765   # then open http://localhost:8765
-```
-
-What it shows: every UMI device (with purchase or quote links where a product page exists), public Hugging Face datasets (with a details panel that loads live from the Hugging Face API, and a gated-access warning), and open-source code. The home page art is a dithered picture of a UMI gripper held by a real hand, reaching toward a stone labelled DATA.
-
-To add a device, dataset or repo, add it to the lists in this README and to [`site/data.js`](site/data.js), which is what the site reads.
-
-Thumbnail images and paper figures belong to their original projects.
-
-
 ## Contents
 
 - [Core](#core)
@@ -217,4 +202,12 @@ Each line gives the organization, first public year and license. Ordered oldest 
 
 ## Contributing
 
-Pull requests are welcome. Add repos that are open-source and clearly UMI-related, one line each.
+Pull requests are welcome. To add something, put one line in the right section, in the same format as its neighbours:
+
+- **A repo** (the sections above the device catalog):
+  `- [owner/repo](https://github.com/owner/repo) ⭐ 120: what it is, in one sentence.` Leave out the stars if you don't know them.
+- **A device** (under [Device catalog](#device-catalog)):
+  `- [Name](https://project-page) - what it is — Organization, year, license ([paper](https://arxiv.org/abs/0000.00000), [code](https://github.com/owner/repo)).`
+- **A dataset** (under [Datasets](#datasets)): name, what kind, who made it, and its size.
+
+Please only add work that is open source or clearly about UMI, and link to a primary source (the paper, project page or repo). Keep each entry to a single line.
